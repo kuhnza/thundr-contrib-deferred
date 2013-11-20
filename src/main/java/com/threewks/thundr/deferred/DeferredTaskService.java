@@ -69,7 +69,7 @@ public class DeferredTaskService {
 				attemptRetry(((RetryableDeferredTask) deferredTask));
 			} else {
 				Logger.warn("Task is not retryable. Giving up!");
-				throw new ThundrDeferredException(e, "Running deferred task failed permanently.");
+				throw new ThundrDeferredException(e, "Running deferred task failed permanently. Reason: %s", e.getMessage());
 			}
 		}
 	}
