@@ -23,6 +23,7 @@ import com.threewks.thundr.deferred.serializer.TaskSerializer;
 import com.threewks.thundr.deferred.task.DeferredTask;
 import com.threewks.thundr.deferred.task.RetryableDeferredTask;
 import com.threewks.thundr.logger.Logger;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -62,11 +63,13 @@ public class DeferredTaskService {
 			Logger.error(errorMessage, e.getMessage());
 			throw new ThundrDeferredException(e, errorMessage, e.getMessage());
 		} catch (Exception e) {
+			Logger.error("Running deferred task failed. Cause: %s", ExceptionUtils.getStackTrace(e));
 			if (deferredTask != null && deferredTask instanceof RetryableDeferredTask) {
-				Logger.error("Running deferred task failed with message: %s. Attempting retry...", e.getMessage());
+				Logger.info("Task is retryable, attempting to schedule retry...", e.getMessage());
 				attemptRetry(((RetryableDeferredTask) deferredTask));
 			} else {
-				throw new ThundrDeferredException(e, "Running deferred task failed permanently. Reason: %s", e.getMessage());
+				Logger.warn("Task is not retryable. Giving up!");
+				throw new ThundrDeferredException(e, "Running deferred task failed permanently.");
 			}
 		}
 	}
