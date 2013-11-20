@@ -9,7 +9,7 @@
 
 	<artifactId>thundr-deferred</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<name>thundr-deferred</name>
 	<url>http://github.com/kuhnza/thundr-deferred/</url>
@@ -32,7 +32,7 @@
 		<connection>scm:git:https://github.com/${username}/${project.name}</connection>
 		<developerConnection>scm:git:https://github.com/${username}/${project.name}</developerConnection>
 		<url>https://github.com/${username}/${project.name}</url>
-	  <tag>v0.0.2</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<dependencies>
