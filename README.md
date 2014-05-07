@@ -2,7 +2,7 @@
 
 Deferred task execution for [Thundr](http://3wks.github.io/thundr/)
 
-[![Build Status](https://travis-ci.org/kuhnza/thundr-deferred.png)](https://travis-ci.org/kuhnza/thundr-deferred)
+[![Build Status](https://travis-ci.org/kuhnza/thundr-contrib-deferred.png)](https://travis-ci.org/kuhnza/thundr-contrib-deferred)
 
 ## Why
 
@@ -14,22 +14,21 @@ Here are a few reasons why you might want to use Thundr Deferred:
 
 ## Dependencies
 
-Thundr Deferred depends on the [Thundr Quartz](https://github.com/kuhnza/thundr-quartz) module for its queue monitor 
-implementation.
+Thundr Deferred depends on the [Thundr Quartz](https://github.com/kuhnza/thundr-contrib-quartz) module for its queue monitor implementation.
 
 ## Usage
 
-First you'll need to add `com.threewks.thundr.deferred=` to your module.properties file. Take care to add it after the 
-Thundr Quartz entry however otherwise you'll get an error when starting your application complaining that QuartzScheduler 
-isn't in your injection context. 
+In your `ApplicationModule`:
+```java
+@Override
+public void requires(DependencyRegistry dependencyRegistry) {
+    super.requires(dependencyRegistry);
 
-For example your module.properties might look something like this:
-
-```ini
-myapp=
-com.threewks.thundr.deferred=
-com.threewks.thundr.quartz=
+    dependencyRegistry.addDependency(QuartzModule.class);
+    dependencyRegistry.addDependency(DeferredModule.class);
+}
 ```
+Take care to add the DeferredModule entry after the Thundr Quartz entry however otherwise you'll get an error when starting your application complaining that QuartzScheduler isn't in your injection context. 
 
 With the module added you'll now have access to the DeferredTaskService from your injection context which means it will
 be injected into any object that declares it as a dependency in its constructor.
@@ -104,8 +103,7 @@ first come, first serve fashion.
 ### A note on serialization
 
 Thundr Deferred makes use of the [GSON](https://code.google.com/p/google-gson/) library for serializing and 
-deserializing tasks on and off the queue. Consequently you should check out the [GSON usage docs](https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson)
-if you have any questions about what can and can't be serialized.
+deserializing tasks on and off the queue. Consequently you should check out the [GSON usage docs](https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson) if you have any questions about what can and can't be serialized.
 
 For convenience we have included date/time convertors for proper serialization of Joda DateTime objects.
 
@@ -113,7 +111,7 @@ For convenience we have included date/time convertors for proper serialization o
 
 There is only one queue monitor supported: Thundr Quartz. Should you require something different raise a pull request
 or a ticket. In the event that you choose to implement your own this can be configured via the `deferredQueueMonitor` 
-property in your application.properties file like so:
+property in your `application.properties` file like so:
 
 ```ini
 deferredQueueMonitor=com.threewks.thundr.deferred.QuartzQueueMonitor
@@ -130,7 +128,7 @@ Support for additional queue providers is planned however this will be subject t
 please feel free to send a pull request or raise a ticket.
 
 The queue provider implementation can be configured via the `deferredQueueProvider` property in your 
-application.properties file like so.
+`application.properties` file like so.
 
 ```ini
 deferredQueueProvider=com.threewks.thundr.deferred.provider.InMemoryQueueProvider
@@ -156,4 +154,4 @@ The SQS queue provider supports the following additional configuration items in 
 * deferredSqsRegion    - The region your queue is deployed in (e.g. us-east-1)
 * deferredSqsQueueName - Your queue name (defaults to thundr-deferred-[env] where env is your environment name)
 
-[DeferredTask]: https://github.com/kuhnza/thundr-deferred/blob/master/src/main/java/com/threewks/thundr/deferred/task/DeferredTask.java
+[DeferredTask]: https://github.com/kuhnza/thundr-contrib-deferred/blob/master/src/main/java/com/threewks/thundr/deferred/task/DeferredTask.java
