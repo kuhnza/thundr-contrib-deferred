@@ -17,18 +17,12 @@
  */
 package com.threewks.thundr.deferred.monitor.quartz;
 
-import com.threewks.thundr.deferred.DeferredTaskService;
-import com.threewks.thundr.deferred.serializer.JsonSerializer;
-import com.threewks.thundr.deferred.serializer.TaskSerializer;
-import com.threewks.thundr.deferred.task.RetryableDeferredTask;
-import com.threewks.thundr.deferred.task.DeferredTask;
-import com.threewks.thundr.injection.InjectionContext;
-import com.threewks.thundr.logger.Logger;
-import com.threewks.thundr.quartz.BaseQuartzJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.List;
+import com.threewks.thundr.deferred.DeferredTaskService;
+import com.threewks.thundr.injection.InjectionContext;
+import com.threewks.thundr.quartz.BaseQuartzJob;
 
 public class QuartzQueueMonitorJob extends BaseQuartzJob {
 	private DeferredTaskService deferredTaskService;

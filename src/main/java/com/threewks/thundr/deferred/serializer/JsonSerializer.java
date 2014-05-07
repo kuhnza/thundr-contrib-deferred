@@ -17,16 +17,17 @@
  */
 package com.threewks.thundr.deferred.serializer;
 
-import com.google.gson.GsonBuilder;
-import com.threewks.thundr.deferred.serializer.gson.DateTimeTypeConverter;
 import org.joda.time.DateTime;
+
+import com.google.gson.GsonBuilder;
+import com.threewks.thundr.json.DateTimeTypeConvertor;
 
 public class JsonSerializer implements Serializer {
 	private final GsonBuilder builder;
 
 	public JsonSerializer() {
 		builder = new GsonBuilder();
-		builder.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter());
+		builder.registerTypeAdapter(DateTime.class, new DateTimeTypeConvertor());
 	}
 
 	@Override

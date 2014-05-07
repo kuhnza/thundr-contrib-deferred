@@ -17,17 +17,16 @@
  */
 package com.threewks.thundr.deferred;
 
+import java.util.List;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.threewks.thundr.deferred.provider.QueueProvider;
 import com.threewks.thundr.deferred.serializer.JsonSerializer;
 import com.threewks.thundr.deferred.serializer.TaskSerializer;
 import com.threewks.thundr.deferred.task.DeferredTask;
 import com.threewks.thundr.deferred.task.RetryableDeferredTask;
 import com.threewks.thundr.logger.Logger;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
-import java.util.List;
 
 public class DeferredTaskService {
 	private final QueueProvider queueProvider;

@@ -17,10 +17,10 @@
  */
 package com.threewks.thundr.deferred.test;
 
-import com.threewks.thundr.deferred.task.DeferredTask;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.threewks.thundr.deferred.task.DeferredTask;
 
 public class MockDeferredTask implements DeferredTask {
 	private String field = "foo";

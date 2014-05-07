@@ -17,12 +17,11 @@
  */
 package com.threewks.thundr.deferred.provider;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 public class InMemoryQueueProvider implements QueueProvider {
-	private List<String> queue = Lists.newArrayList();
+	private List<String> queue = new ArrayList<String>();
 
 	@Override
 	public void send(String message) {
@@ -31,7 +30,7 @@ public class InMemoryQueueProvider implements QueueProvider {
 
 	@Override
 	public List<String> receive() {
-		List<String> items = Lists.newArrayList(queue);
+		List<String> items = new ArrayList<String>(queue);
 
 		queue.clear();
 

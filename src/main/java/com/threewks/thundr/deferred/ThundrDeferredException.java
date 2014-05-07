@@ -20,6 +20,8 @@ package com.threewks.thundr.deferred;
 import com.threewks.thundr.exception.BaseException;
 
 public class ThundrDeferredException extends BaseException {
+	private static final long serialVersionUID = 1L;
+
 	public ThundrDeferredException(Throwable cause, String format, Object... formatArgs) {
 		super(cause, format, formatArgs);
 	}
