@@ -7,13 +7,13 @@
 		<version>3</version>
 	</parent>
 
-	<artifactId>thundr-deferred</artifactId>
+	<artifactId>thundr-contrib-deferred</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1.0-SNAPSHOT</version>
 
-	<name>thundr-deferred</name>
-	<url>http://github.com/kuhnza/thundr-deferred/</url>
-	<description>Deferred task execution for Thundr</description>
+	<name>thundr-contrib-deferred</name>
+	<url>http://github.com/kuhnza/thundr-contrib-deferred/</url>
+	<description>Deferred task execution module for Thundr</description>
 
 	<properties>
 		<username>kuhnza</username>
