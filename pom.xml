@@ -9,7 +9,7 @@
 
 	<artifactId>thundr-deferred</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 
 	<name>thundr-deferred</name>
 	<url>http://github.com/kuhnza/thundr-deferred/</url>
@@ -37,8 +37,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.threewks.thundr</groupId>
-			<artifactId>thundr-quartz</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<artifactId>thundr-contrib-quartz</artifactId>
+			<version>0.1.0</version>
 			<scope>compile</scope>
 		</dependency>
 
