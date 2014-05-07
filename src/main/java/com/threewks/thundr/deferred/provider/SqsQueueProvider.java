@@ -61,6 +61,7 @@ public class SqsQueueProvider implements QueueProvider {
 		init(client, deferredSqsQueueName);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void send(String message) {
 		SendMessageResult result = sqs.sendMessage(new SendMessageRequest(queueUrl, message));

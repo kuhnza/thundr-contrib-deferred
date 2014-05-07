@@ -17,18 +17,19 @@
  */
 package com.threewks.thundr.deferred.quartz;
 
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.quartz.JobExecutionException;
+
 import com.threewks.thundr.deferred.DeferredTaskService;
 import com.threewks.thundr.deferred.monitor.quartz.QuartzQueueMonitorJob;
 import com.threewks.thundr.deferred.provider.QueueProvider;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
-import org.junit.Before;
-import org.junit.Test;
-import org.quartz.JobExecutionException;
-
-import java.util.Arrays;
-
-import static org.mockito.Mockito.*;
 
 public class BackgroundTaskMonitorJobTest {
 	private QuartzQueueMonitorJob monitorJob;
