@@ -17,13 +17,13 @@
  */
 package com.threewks.thundr.deferred.provider;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class InMemoryQueueProviderTest {
 	private InMemoryQueueProvider provider;

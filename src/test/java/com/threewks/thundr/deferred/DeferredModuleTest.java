@@ -17,6 +17,16 @@
  */
 package com.threewks.thundr.deferred;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.mock;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import com.threewks.thundr.deferred.monitor.MockQueueMonitor;
 import com.threewks.thundr.deferred.monitor.QueueMonitor;
 import com.threewks.thundr.deferred.monitor.quartz.QuartzQueueMonitor;
@@ -26,34 +36,24 @@ import com.threewks.thundr.deferred.provider.QueueProvider;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.quartz.QuartzScheduler;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
-
-public class DeferredInjectionConfigurationTest {
+public class DeferredModuleTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
-	private DeferredInjectionConfiguration injectionConfiguration;
+	private DeferredModule module;
 	private UpdatableInjectionContext injectionContext;
 
 	@Before
 	public void before() {
 		injectionContext = new InjectionContextImpl();
 		injectionContext.inject(mock(QuartzScheduler.class)).as(QuartzScheduler.class);
-		injectionConfiguration = new DeferredInjectionConfiguration();
+		module = new DeferredModule();
 	}
 
 	@Test
 	public void shouldConfigureDefaultQueueProvider() {
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 
 		QueueProvider queueProvider = injectionContext.get(QueueProvider.class);
 		assertThat(queueProvider, is(instanceOf(InMemoryQueueProvider.class)));
@@ -61,7 +61,7 @@ public class DeferredInjectionConfigurationTest {
 
 	@Test
 	public void shouldConfigureDefaultQueueMonitor() {
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 
 		QueueMonitor queueMonitor = injectionContext.get(QueueMonitor.class);
 		assertThat(queueMonitor, is(instanceOf(QuartzQueueMonitor.class)));
@@ -70,7 +70,7 @@ public class DeferredInjectionConfigurationTest {
 	@Test
 	public void shouldOverrideDefaultQueueProvider() {
 		injectionContext.inject("com.threewks.thundr.deferred.provider.MockQueueProvider").named("deferredQueueProvider").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 
 		QueueProvider queueProvider = injectionContext.get(QueueProvider.class);
 		assertThat(queueProvider, is(instanceOf(MockQueueProvider.class)));
@@ -82,7 +82,7 @@ public class DeferredInjectionConfigurationTest {
 		thrown.expectMessage("No such queue provider: com.threewks.thundr.deferred.provider.FakeQueueProvider. Is it on the classpath?");
 
 		injectionContext.inject("com.threewks.thundr.deferred.provider.FakeQueueProvider").named("deferredQueueProvider").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 	}
 
 	@Test
@@ -91,13 +91,13 @@ public class DeferredInjectionConfigurationTest {
 		thrown.expectMessage("Queue provider must implement " + QueueProvider.class.getName());
 
 		injectionContext.inject("com.threewks.thundr.deferred.monitor.MockQueueMonitor").named("deferredQueueProvider").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 	}
 
 	@Test
 	public void shouldOverrideDefaultQueueMonitor() {
 		injectionContext.inject("com.threewks.thundr.deferred.monitor.MockQueueMonitor").named("deferredQueueMonitor").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 
 		QueueMonitor queueMonitor = injectionContext.get(QueueMonitor.class);
 		assertThat(queueMonitor, is(instanceOf(MockQueueMonitor.class)));
@@ -109,7 +109,7 @@ public class DeferredInjectionConfigurationTest {
 		thrown.expectMessage("No such queue monitor: com.threewks.thundr.deferred.monitor.FakeQueueMonitor. Is it on the classpath?");
 
 		injectionContext.inject("com.threewks.thundr.deferred.monitor.FakeQueueMonitor").named("deferredQueueMonitor").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 	}
 
 	@Test
@@ -118,12 +118,12 @@ public class DeferredInjectionConfigurationTest {
 		thrown.expectMessage("Queue monitor must implement " + QueueMonitor.class.getName());
 
 		injectionContext.inject("com.threewks.thundr.deferred.provider.MockQueueProvider").named("deferredQueueMonitor").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 	}
 
 	@Test
 	public void shouldInjectDeferredTaskService() {
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
 
 		DeferredTaskService service = injectionContext.get(DeferredTaskService.class);
 		assertThat(service, is(notNullValue()));
@@ -132,7 +132,8 @@ public class DeferredInjectionConfigurationTest {
 	@Test
 	public void shouldStartQueueMonitor() {
 		injectionContext.inject(MockQueueMonitor.class.getName()).named("deferredQueueMonitor").as(String.class);
-		injectionConfiguration.configure(injectionContext);
+		module.configure(injectionContext);
+		module.start(injectionContext);
 
 		MockQueueMonitor monitor = (MockQueueMonitor) injectionContext.get(QueueMonitor.class);
 		assertThat(monitor.startCalled, is(true));

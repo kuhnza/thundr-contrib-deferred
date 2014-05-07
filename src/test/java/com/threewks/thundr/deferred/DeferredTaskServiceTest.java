@@ -17,6 +17,16 @@
  */
 package com.threewks.thundr.deferred;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.*;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
+
 import com.threewks.thundr.deferred.provider.InMemoryQueueProvider;
 import com.threewks.thundr.deferred.provider.QueueProvider;
 import com.threewks.thundr.deferred.serializer.JsonSerializer;
@@ -24,17 +34,6 @@ import com.threewks.thundr.deferred.serializer.TaskSerializer;
 import com.threewks.thundr.deferred.test.MockDeferredTask;
 import com.threewks.thundr.deferred.test.MockExceptionThrowingDeferredTask;
 import com.threewks.thundr.deferred.test.MockRetryableDeferredTask;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
-
-import java.util.Arrays;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
 
 public class DeferredTaskServiceTest {
 	@Rule

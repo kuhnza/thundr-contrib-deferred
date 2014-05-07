@@ -19,28 +19,45 @@ package com.threewks.thundr.deferred;
 
 import com.threewks.thundr.deferred.monitor.QueueMonitor;
 import com.threewks.thundr.deferred.provider.QueueProvider;
-import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContext;
+import com.threewks.thundr.injection.Module;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.logger.Logger;
+import com.threewks.thundr.module.DependencyRegistry;
+import com.threewks.thundr.quartz.QuartzModule;
 
-public class DeferredInjectionConfiguration implements InjectionConfiguration {
+public class DeferredModule implements Module {
+	@Override
+	public void requires(DependencyRegistry dependencyRegistry) {
+		dependencyRegistry.addDependency(QuartzModule.class);
+	}
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+	}
+
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
 		addQueueProvider(injectionContext);
 		addQueueMonitor(injectionContext);
 
 		injectionContext.inject(DeferredTaskService.class).as(DeferredTaskService.class);
+	}
 
+	@Override
+	public void start(UpdatableInjectionContext injectionContext) {
 		Logger.info("Starting queue monitor...");
 		injectionContext.get(QueueMonitor.class).start();
 		Logger.info("Queue monitor started OK.");
 	}
 
+	@Override
+	public void stop(InjectionContext injectionContext) {
+	}
+
 	@SuppressWarnings("unchecked")
 	private void addQueueProvider(UpdatableInjectionContext injectionContext) {
-		String queueProviderClassName = getProperty(
-				String.class, injectionContext, "deferredQueueProvider", Defaults.QueueProvider);
+		String queueProviderClassName = getProperty(String.class, injectionContext, "deferredQueueProvider", Defaults.QueueProvider);
 		try {
 			Class<?> type = Class.forName(queueProviderClassName);
 			if (QueueProvider.class.isAssignableFrom(type)) {
